@@ -1,5 +1,8 @@
 # Даны два файла, в каждом из которых находится запись многочлена. Задача - сформировать файл, содержащий сумму многочленов.
 
+import os
+os.chdir('./2_Python/4_dz')
+
 def vivod(data):
     for line in data:
         return line.split('=')[0].strip()

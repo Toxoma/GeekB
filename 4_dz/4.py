@@ -5,6 +5,8 @@
 # - k=2 => 2*x² + 4*x + 5 = 0 или x² + 5 = 0 или 10*x² = 0
 
 from random import randint
+import os
+os.chdir('./2_Python/4_dz')
 
 def proverka():
     k = int(input('Введите натуральное число: '))
