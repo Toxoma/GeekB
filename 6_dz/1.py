@@ -3,7 +3,7 @@
 # Напишите программу, удаляющую из текста все слова, содержащие ""абв"".
 
 import os
-os.chdir('./2_Python/5_dz')
+os.chdir('./2_Python/6_dz')
 
 with open('1.txt', 'r', encoding="utf-8") as data1:
     with open('1-res.txt', 'w', encoding="utf-8") as data2:

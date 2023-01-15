@@ -2,7 +2,7 @@
 
 import re 
 import os
-os.chdir('./2_Python/5_dz')
+os.chdir('./2_Python/6_dz')
 
 # encode
 with open('4.txt', 'r') as data1:
