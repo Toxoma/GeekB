@@ -11,8 +11,7 @@ with open('4.txt', 'r') as data1:
             result = line
             mas = []
             length = 0
-            myset = set([char for char in line if char != '\n'])
-            for x in myset:
+            for x in set([char for char in line if char != '\n']):
                 mas += re.findall(rf'{x}+', line)
             for x in mas:
                 length = len(x)
@@ -33,3 +32,4 @@ with open('4-res.txt', 'r') as data1:
                     decodeLine += x[-1]
                 result = re.sub(x, decodeLine, result)
             data2.write(result)
+

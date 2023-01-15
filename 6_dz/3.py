@@ -36,10 +36,16 @@ player = True # Игрок 1
 while end == False:
     vivod()
 
-    if player == True:
-        setStep(int(input("Игрок 1, делает ход: ")),"X")
-    else:
-        setStep(int(input("Игрок 2, делает ход: ")),"O")
+    y = False
+    while not y:
+        try:
+            if player == True:
+                setStep(int(input("Игрок 1, делает ход: ")),"X")
+            else:
+                setStep(int(input("Игрок 2, делает ход: ")),"O")
+            y = True
+        except:
+            print('Необходимо ввести целое число из поля')
 
     win = result()
     if win != "":
