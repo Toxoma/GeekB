@@ -3,7 +3,7 @@ import logging
 import random
 from aiogram import Bot, Dispatcher, executor, types
 
-bot = Bot("6149297947:AAF11wYoTbq5pqMdeE5cIT7_5HxBKbi3m-c")
+bot = Bot("TOKEN")
 dp = Dispatcher(bot=bot)
 MSG = 'Отлично, выбрана сложность {}, для выхода нажмите "/stop", поехали!'
 progIsRunning = False
