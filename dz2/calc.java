@@ -6,10 +6,10 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public class calc {
+public class Calc {
     static float current = 0;
     static Scanner scaner = new Scanner(System.in);
-    static Logger logger = Logger.getLogger(calc.class.getName());
+    static Logger logger = Logger.getLogger(Calc.class.getName());
 
     public static void main(String[] args) throws SecurityException, IOException {
         String input = "";
