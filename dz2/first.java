@@ -25,10 +25,7 @@
 
 package Java.dz2;
 
-import java.util.List;
-import java.util.Scanner;
-
-public class first {
+public class First {
     static String request = "select * from students";
 
     public static void main(String[] args) {

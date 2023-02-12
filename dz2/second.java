@@ -3,15 +3,14 @@
 package Java.dz2;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.logging.*;
 
-public class second {
+public class Second {
     public static void main(String[] args) throws SecurityException, IOException, NoSuchFieldException {
         int[] mas = {5, 3, 5, 3, 4, 4, 3, 2, 5, 4, 1, 2, 10, 777, 3};
 
-        Logger logger = Logger.getLogger(second.class.getName());
+        Logger logger = Logger.getLogger(Second.class.getName());
         FileHandler fh = new FileHandler("log.txt");
         logger.addHandler(fh);
         SimpleFormatter sFormat = new SimpleFormatter();

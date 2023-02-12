@@ -1,12 +1,8 @@
 package Java.dz2;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
-import javax.lang.model.type.NullType;
 
-public class calc {
+public class Calc {
     static float current = 0;
     static Scanner scaner = new Scanner(System.in);
 
