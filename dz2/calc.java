@@ -1,14 +1,24 @@
 package Java.dz2;
 
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
-public class Calc {
+public class calc {
     static float current = 0;
     static Scanner scaner = new Scanner(System.in);
+    static Logger logger = Logger.getLogger(calc.class.getName());
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SecurityException, IOException {
         String input = "";
         scaner = new Scanner(System.in);
+
+        FileHandler fh = new FileHandler("calcLogs.txt");
+        logger.addHandler(fh);
+        SimpleFormatter sFormat = new SimpleFormatter();
+        fh.setFormatter(sFormat);
 
         do {
             System.out.printf("Текущее значение =\t%.2f\n", current);
@@ -57,6 +67,7 @@ public class Calc {
                 division();
                 return;
             }
+            logger.info(String.format("%.2f / %f = %.2f", current, input, current/input));
             current /= input;
         } catch (Exception e) {
             System.out.println("Вы пытались ввести некорректное число! Повторите попытку...");
@@ -69,6 +80,7 @@ public class Calc {
         System.out.printf("%.2f * ", current);
         try {
             float input = getFloat();
+            logger.info(String.format("%.2f * %f = %.2f", current, input, current*input));
             current *= input;
         } catch (Exception e) {
             System.out.println("Вы пытались ввести некорректное число! Повторите попытку...");
@@ -81,6 +93,7 @@ public class Calc {
         System.out.printf("%.2f - ", current);
         try {
             float input = getFloat();
+            logger.info(String.format("%.2f - %f = %.2f", current, input, current-input));
             current -= input;
         } catch (Exception e) {
             System.out.println("Вы пытались ввести некорректное число! Повторите попытку...");
@@ -93,6 +106,7 @@ public class Calc {
         System.out.printf("%.2f + ", current);
         try {
             float input = getFloat();
+            logger.info(String.format("%.2f + %f = %.2f", current, input, current+input));
             current += input;
         } catch (Exception e) {
             System.out.println("Вы пытались ввести некорректное число! Повторите попытку...");
@@ -113,5 +127,6 @@ public class Calc {
 
     public static void clear() {
         current = 0;
+        logger.info(String.format("Сброс... Текущее = %.2f", current));
     }
 }
