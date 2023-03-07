@@ -1,40 +1,36 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        Good good1 = new Good("Bread", 100, 4);
-        Good good2 = new Good("Cheeze", 200, 3);
-        Good good3 = new Good("Rum", 300, 5);
+        List<Creature> sprinters = new ArrayList<>();
+        sprinters.add(new Cat("Тим", 100, 100));
+        sprinters.add(new Robot("Оптимус", 200, 200));
+        sprinters.add(new Human("Ден", 300, 300));
 
-        Category category1 = new Category("Alco");
-        category1.addGood(good3);
-        Category category2 = new Category("Another");
-        category2.addGood(good1);
-        category2.addGood(good2);
+        List<Obstacle> obstacles = new ArrayList<>();
+        obstacles.add(new Road(100));
+        obstacles.add(new Wall(100));
+        obstacles.add(new Road(200));
+        obstacles.add(new Wall(200));
+        obstacles.add(new Wall(300));
+        obstacles.add(new Road(300));
 
-        ListOfGoods catalog = new ListOfGoods();
-        catalog.addGood(good1, 3);
-        catalog.addGood(good2, 3);
-        catalog.addGood(good3, 3);
-        catalog.printAllGoods();
+        for (Creature sprinter : sprinters) {
+            for (Obstacle obstacle : obstacles) {
+                if (sprinter.getFail()) break;
 
-        System.out.println();
+                if (obstacle.getName() == "Wall") {
+                    sprinter.jump(obstacle);
+                }else{
+                    sprinter.run(obstacle);
+                }
+            }
 
-        User user1 = new User("Dan", "123");
-        user1.basket.addGood(good3, catalog);
-        user1.basket.addGood(good3, catalog);
-        user1.basket.addGood(good3, catalog);
-        user1.basket.addGood(good3, catalog);
-        user1.printGoodsInBasket();
-        User user2 = new User("Ann", "321");
-        user2.basket.addGood(good2, catalog);
-        user2.basket.addGood(good2, catalog);
-        user2.basket.addGood(good1);
-        user2.printGoodsInBasket();
-
-        System.out.println();
-
-        System.out.println("Остатки в магазине");
-        catalog.printAllGoods();
+            sprinter.finish();
+            System.out.println();
+        }
     }
 }
