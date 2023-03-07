@@ -7,13 +7,9 @@ abstract class Creature {
     private int maxJump;
 
     public Creature(String name, int maxRun, int maxJump) {
-        this.name = name;
-        this.maxRun = maxRun;
-        this.maxJump = maxJump;
-    }
-
-    public Boolean getFail() {
-        return fail;
+        this.setName(name);
+        this.setMaxRun(maxRun);
+        this.setMaxJump(maxJump);
     }
 
     public void setFail() {
@@ -43,6 +39,12 @@ abstract class Creature {
         }
     }
 
+    public void finish(){
+        if (!this.getFail())
+            System.out.printf("Участник %s заканчивает гонку! Поздравляем!!!\n", this.getName());
+    }
+
+//    _________________________
     public String getName() {
         return name;
     }
@@ -51,8 +53,23 @@ abstract class Creature {
         this.name = name;
     }
 
-    public void finish(){
-        if (!this.getFail())
-            System.out.printf("Участник %s заканчивает гонку! Поздравляем!!!\n", this.getName());
+    public Boolean getFail() {
+        return fail;
+    }
+
+    public int getMaxRun() {
+        return maxRun;
+    }
+
+    public void setMaxRun(int maxRun) {
+        this.maxRun = maxRun;
+    }
+
+    public int getMaxJump() {
+        return maxJump;
+    }
+
+    public void setMaxJump(int maxJump) {
+        this.maxJump = maxJump;
     }
 }

@@ -4,6 +4,10 @@ abstract class Obstacle {
     private int scale;
     protected String name;
 
+    public Obstacle(int scale) {
+        this.setScale(scale);
+    }
+
     public String getName() {
         return name;
     }
