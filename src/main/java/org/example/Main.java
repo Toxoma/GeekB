@@ -1,36 +1,42 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        List<Creature> sprinters = new ArrayList<>();
-        sprinters.add(new Cat("Тим", 100, 100));
-        sprinters.add(new Robot("Оптимус", 200, 200));
-        sprinters.add(new Human("Ден", 300, 300));
-
-        List<Obstacle> obstacles = new ArrayList<>();
-        obstacles.add(new Road(100));
-        obstacles.add(new Wall(100));
-        obstacles.add(new Road(200));
-        obstacles.add(new Wall(200));
-        obstacles.add(new Wall(300));
-        obstacles.add(new Road(300));
-
-        for (Creature sprinter : sprinters) {
-            for (Obstacle obstacle : obstacles) {
-                if (sprinter.getFail()) break;
-
-                if (obstacle.getName() == "Wall") {
-                    sprinter.jump(obstacle);
-                }else{
-                    sprinter.run(obstacle);
-                }
-            }
-
-            sprinter.finish();
-            System.out.println();
+        System.out.println("Выберите тип игры:\n1) Цифры\n2) Рус\n3) Англ");
+        History history = new History();
+        System.out.print("Ваш выбор: ");
+        Scanner scanner = new Scanner(System.in);
+        Game game = null;
+        Integer temp1 = scanner.nextInt();
+        history.addAction(String.valueOf(temp1));
+        switch (temp1){
+            case 1:
+                game = new NumberGame();
+                break;
+            case 2:
+                game = new WordRusGame();
+                break;
+            case 3:
+                game = new WordEngGame();
+                break;
+            default:
+                System.out.println("Нет такой игры!");
+        }
+        game.start(4,2);
+        scanner.nextLine();
+        String temp2 = "";
+        while(game.getGameStatus() == GameStatus.START){
+            System.out.print("-> ");
+            temp2 = scanner.nextLine();
+            game.inputAnswer(temp2);
+            history.addAction(temp2);
+        }
+        System.out.println(game.getGameStatus());
+        System.out.println("Желаете отобразить историю? y - да");
+        if ("y".equals(scanner.nextLine())){
+            history.showHistory();
         }
     }
 }
