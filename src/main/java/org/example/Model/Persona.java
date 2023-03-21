@@ -1,5 +1,10 @@
 package org.example.Model;
 
+/*
+Interface Segregation Principle
+Liskov’s Substitution Principle
+LearnGroup не нужнен String name, поэтому выносим в отдельный класс
+ */
 abstract class Persona extends Identification {
     protected String name;
 
