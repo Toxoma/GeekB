@@ -32,4 +32,12 @@ public class CalculatorWithLogging extends Calculator {
         str+=" * ( " + this.getValue("temp") +" ) = " + this.getValue("");
         System.out.println(str);
     }
+
+    @Override
+    public void Division() {
+        var str = "Логирование операции деления: ( " + this.getValue("") + " )";
+        super.Division();
+        str+=" / ( " + this.getValue("temp") +" ) = " + this.getValue("");
+        System.out.println(str);
+    }
 }
