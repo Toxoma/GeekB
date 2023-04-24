@@ -2,13 +2,23 @@
 import controller as c
 import model
 
-def showMenu(options, optionsNames):
+def showMenu(options):
     print()
     print('Выберите необходимое действие')
     for idx, option in enumerate(options):
-        print(f'{idx}. {optionsNames[idx]}')
+        print(f'{idx}. {option["name"]}')
     print()
     return c.chooseAction('Введите номер необходимого действия: ', len(options))
+
+def showAll(mas):
+    print()
+    print('Все заметки:')
+    for idx, line in enumerate(mas):
+        print(f'{idx+1}) Идентификатор: {line[0]}; Заголовок: {line[1]}; Описание: {line[2]}; Дата: {line[3]}')
+    print('__________________')
+
+# ____________________________________
+
 
 def addNewPerson():
     surname = input('Surname: ')

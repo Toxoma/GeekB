@@ -2,17 +2,37 @@
 import view, model, json
 
 def start():
-    options = [exitProg, addNote, readAll, readById, removeNote, changeNote, readAllBetweenDates]
-    optionsNames = [
-        'Закончить работу',
-        'Добавить заметку',
-        'Вывести все заметки',
-        'Вывести заметку по id',
-        'Удалить заменку',
-        'Изменить заменку',
-        'Вывести все заметки в интервале',
+    options = [
+        {
+            'name': 'Закончить работу',
+            'func': exitProg,
+        },
+        {
+            'name': 'Вывести все заметки',
+            'func': showAll,
+        },
+        {
+            'name': 'Добавить заметку',
+            'func': addNote,
+        },
+        {
+            'name': 'Вывести заметку по id',
+            'func': showById,
+        },
+        {
+            'name': 'Удалить заменку',
+            'func': removeNote,
+        },
+        {
+            'name': 'Изменить заменку',
+            'func': changeNote,
+        },
+        {
+            'name': 'Вывести все заметки в интервале',
+            'func': readAllBetweenDates,
+        },
     ]
-    return options[view.showMenu(options, optionsNames)]()
+    return options[view.showMenu(options)]['func']()
 
 # OPTIONS
 def exitProg():
@@ -21,10 +41,11 @@ def exitProg():
 def addNote():
     return 1
 
-def readAll():
+def showAll():
+    view.showAll(model.getAllNotes())
     return 1
 
-def readById():
+def showById():
     return 1
 
 def removeNote():
