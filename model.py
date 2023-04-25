@@ -1,91 +1,101 @@
 # -*- coding: utf-8 -*-
 import csv
-import view
-import controller as c
+from time import gmtime, strftime
+from datetime import datetime
+
+fileBD = 'F:/GeekBrains/GeekBrains/2_Python/NotebookProject/GeekB/database.csv'
 
 # Все записи в БД
 def getAllNotes():
-    with open('database.csv', 'r', newline='', encoding='utf-8') as data:
+    with open(fileBD, 'r', newline='', encoding='utf-8') as data:
         reader = csv.reader(data, delimiter=';', quotechar=',',
                         quoting=csv.QUOTE_MINIMAL)
         mas = []
         for line in reader:
             mas.append(line)
-        return mas
+        return sorted(mas)
 
-
-# __________________
-
-def showError(id):
-    print(f'Индекс {id} не был найден в базе!!!\nПопробуйте ещё раз...')
-
-
-
-# def newPerson(userData):
-#     surname, name, role, phone, money = userData
-#     with open('database.csv', 'a+', newline='', encoding='utf-8') as data:
-#         id = 1
-#         for line in getDataBase():
-#             innerId = int(line.split(';')[0])
-#             if innerId >= id:
-#                 id = innerId + 1
-            
-#         member = f'{id};{surname};{name};{role};{phone};{money};\n'
-#         data.write(member)
-
-def deletePerson(userData):
-    id, mas = userData
-    err = True
-    with open('database.csv', 'w', newline='', encoding='utf-8') as data:
+# Поиск по id
+def showById(id):
+    if(checkExist(id)):
+        mas = getAllNotes()
         for line in mas:
-            if int(id) != int(line.split(';')[0]): 
-                data.write(line)
-            else:
-                err = False
-    if err:
-        showError(id)
+            if int(id) == int(line[0]):
+                print('Информация о заметке:')
+                print(f'Идентификатор: {line[0]}; Заголовок: {line[1]}; Описание: {line[2]}; Дата: {line[3]}')
+                return
 
-def findPerson(id):
-    err = True
-    with open('database.csv', 'r', newline='', encoding='utf-8') as data:
-        for line in data:
-            if int(id) == int(line.split(';')[0]):
-                print('Данные о пользователе:')
-                print(line.strip())
-                err = False
-    if err:
-        showError(id)
+# добавление заметки
+def addNote( data ):
+    try:
+        title, desc = data
+        with open(fileBD, 'a+', newline='', encoding='utf-8') as csv:
+            mas = getAllNotes()
+            id = 1
+            # тк массив отсортированный можно сразу брать последний элемент
+            if (len(mas) > 0):
+                id = int(mas[len(mas)-1][0]) + 1
+            date = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+            note = f'{id};{title};{desc};{date}\n'
+            csv.write(note)
+            print('Заметка была добавлена!')
+    except:
+        print('Что-то пошло не так при добавлении заметки... Попробуйте снова!')
 
-def updatePerson(userData):
-    err = True
-    id, mas = userData
-    surname, name, role, phone, money = view.addNewPerson()
-    with open('database.csv', 'w', newline='', encoding='utf-8') as data:
+# удаление заметки
+def removeNote(id):
+    try:
+        if(checkExist(id)):
+            mas = getAllNotes()
+            with open(fileBD, 'w', newline='', encoding='utf-8') as data:
+                for line in mas:
+                    if id != int(line[0]):
+                        data.write(f'{line[0]};{line[1]};{line[2]};{line[3]}\n')
+    except:
+        print('Что-то пошло не так при удалении заметки... Попробуйте снова!')
+
+def changeNote(id, data):
+    try:
+        mas = getAllNotes()
+        title, desc = data
+        with open(fileBD, 'w', newline='', encoding='utf-8') as csv:
+            for line in mas:
+                if id != int(line[0]):
+                    csv.write(f'{line[0]};{line[1]};{line[2]};{line[3]}\n')
+                else:
+                    date = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+                    csv.write(f'{id};{title};{desc};{date}\n')
+            print('Заметка была обновлена!')
+    except:
+        print('Что-то пошло не так при обновлении заметки... Попробуйте снова!')
+
+def readAllBetweenDates(data):
+    # try:
+        dateStart, dateEnd = data
+        mas = sorted(getAllNotes(), key=lambda item: item[3])
+        idx = 0
+        format = "%Y-%m-%d %H:%M:%S"
         for line in mas:
-            if int(id) != int(line.split(';')[0]): 
-                data.write(line)
-            else:
-                data.write(f'{id};{surname};{name};{role};{phone};{money};\n')
-                err = False
-    if err:
-        showError(id)
+            if(
+                datetime.strptime(line[3], format) >= dateStart and 
+                datetime.strptime(line[3], format) <= dateEnd 
+                ):
+                if (idx == 0):
+                    print()
+                    print(f'Вывод заметок в интервале {dateStart} - {dateEnd}')
+                idx = idx + 1
+                print(f'{idx}) Идентификатор: {line[0]}; Заголовок: {line[1]}; Описание: {line[2]}; Дата: {line[3]}')
+    # except:
+    #     print(f'Что-то пошло не так при выводе заметок в интервале: {dateStartStr} - {dateEndStr}. Попробуйте снова!')
 
-def getRoles():
-    roles = set()
-    for line in getDataBase():
-        roles.add(line.split(';')[3])
-    return list(roles)
-
-# def showRoles(roles=getRoles()):
-#     print()
-#     print('Имеющиеся должности:')
-#     for idx,line in enumerate(roles, 1):
-#         print(f'{idx}. {line.strip()}')
-#     print('__________________')
-
-def sortRole(role):
-    print()
-    print('Отфильтрованные сотрудники:')
-    for line in getDataBase():
-        if line.split(';')[3] == role:
-            print(line.strip())
+# _______________________________
+# METHODS
+def checkExist(id):
+    try:
+        for line in getAllNotes():
+            if int(id) == int(line[0]):
+                return True
+        print(f'Заметки с индексом: {id} не было найдено в базе!!!\nПопробуйте ещё раз...')
+        return False
+    except:
+        print('Что-то пошло не так при поиске в БД... Попробуйте снова!')
