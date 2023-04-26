@@ -1,0 +1,62 @@
+toxoma@toxoma-virtual-machine:~/GB$ mkdir "Игрушки для школьников"
+toxoma@toxoma-virtual-machine:~/GB$ mkdir "Игрушки для дошколят"
+toxoma@toxoma-virtual-machine:~/GB$ cd Игрушки\ для\ школьников/
+toxoma@toxoma-virtual-machine:~/GB/Игрушки для школьников$ >Роботы.txt
+toxoma@toxoma-virtual-machine:~/GB/Игрушки для школьников$ >Конструктор.txt
+toxoma@toxoma-virtual-machine:~/GB/Игрушки для школьников$ >"Настольные игры.txt"
+toxoma@toxoma-virtual-machine:~/GB/Игрушки для школьников$ cd ../Игрушки\ для\ дошколят/
+toxoma@toxoma-virtual-machine:~/GB/Игрушки для дошколят$ >"Мягкие игрушки.txt"
+toxoma@toxoma-virtual-machine:~/GB/Игрушки для дошколят$ >"Куклы.txt"
+toxoma@toxoma-virtual-machine:~/GB/Игрушки для дошколят$ >"Машинки.txt"
+toxoma@toxoma-virtual-machine:~/GB/Игрушки для дошколят$ mkdir "Имя игрушки"
+toxoma@toxoma-virtual-machine:~/GB/Игрушки для дошколят$ mv Имя\ игрушки/ ../
+toxoma@toxoma-virtual-machine:~/GB/Игрушки для дошколят$ cd ..
+toxoma@toxoma-virtual-machine:~/GB$ cp Игрушки\ для\ дошколят/* Имя\ игрушки/
+toxoma@toxoma-virtual-machine:~/GB$ cp Игрушки\ для\ школьников/* Имя\ игрушки/
+toxoma@toxoma-virtual-machine:~/GB$ mv Имя\ игрушки/ Игрушки
+toxoma@toxoma-virtual-machine:~/GB$ cd Игрушки 
+toxoma@toxoma-virtual-machine:~/GB/Игрушки$ ll
+total 8
+drwxrwxr-x 2 toxoma toxoma 4096 апр 26 13:17  ./
+drwxrwxr-x 5 toxoma toxoma 4096 апр 26 13:18  ../
+-rw-rw-r-- 1 toxoma toxoma    0 апр 26 13:17  Конструктор
+-rw-rw-r-- 1 toxoma toxoma    0 апр 26 13:17  Куклы.txt
+-rw-rw-r-- 1 toxoma toxoma    0 апр 26 13:17  Машинки.txt
+-rw-rw-r-- 1 toxoma toxoma    0 апр 26 13:17 'Мягкие игрушки.txt'
+-rw-rw-r-- 1 toxoma toxoma    0 апр 26 13:17 'Настольные игры.txt'
+-rw-rw-r-- 1 toxoma toxoma    0 апр 26 13:17  Роботы.txt
+toxoma@toxoma-virtual-machine:~/GB/Игрушки$ sudo snap install chromium
+[sudo] password for toxoma: 
+chromium 112.0.5615.49 from Canonical✓ installed
+toxoma@toxoma-virtual-machine:~/GB/Игрушки$ sudo snap remove chromium
+chromium removed
+toxoma@toxoma-virtual-machine:~/GB/Игрушки$ 
+toxoma@toxoma-virtual-machine:~/GB/Игрушки$ crontab -e
+crontab: installing new crontab
+toxoma@toxoma-virtual-machine:~/GB/Игрушки$ crontab -l
+# Edit this file to introduce tasks to be run by cron.
+# 
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+# 
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').
+# 
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+# 
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+# 
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+# 
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+# m h  dom mon dow   command
+
+*/3 * * * * echo $(date) >> /home/toxoma/GB/date.txt
+toxoma@toxoma-virtual-machine:~/GB/Игрушки$ 
