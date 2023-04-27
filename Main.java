@@ -2,8 +2,8 @@ package Java.GeekB;
 
 public class Main {
     public static void main(String[] args) {
+// class shop можно сказать в роли пользовательского интерфейса (всё взаимодействие через него)
         Shop shop1 = new Shop();
-
         shop1.getLottery().spinWheel();
 
         shop1.addToyByName("Тигр3");
