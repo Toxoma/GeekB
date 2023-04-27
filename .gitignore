@@ -3,3 +3,5 @@
 *.csproj
 .folder
 __pycache__
+.idea
+out
