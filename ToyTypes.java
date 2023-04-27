@@ -10,7 +10,7 @@ public class ToyTypes extends DefaultProperties {
     protected int lotteryMin = 0;
     protected int lotteryMax = 0;
 
-    protected LinkedList<Toy> toys = new LinkedList<>();
+    private LinkedList<Toy> toys = new LinkedList<>();
 
     public ToyTypes(String name, int weight, int amount) {
         super(++GLOBAL_ID, name, weight);
@@ -20,8 +20,15 @@ public class ToyTypes extends DefaultProperties {
         }
     }
 
-    public void setWeight(int weight) {
+    protected LinkedList<Toy> getToys() {
+        return toys;
+    }
+
+    protected void setWeight(int weight) {
         this.weight = weight;
+        for (Toy toy : this.toys) {
+            toy.setWeight(weight);
+        }
     }
 
     public int getAmount() {

@@ -9,4 +9,8 @@ public class Toy extends DefaultProperties {
     public Toy(String name, int weight) {
         super(++GLOBAL_ID, name, weight);
     }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
 }

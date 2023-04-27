@@ -2,6 +2,7 @@ package Java.GeekB.abstracts;
 
 public abstract class DefaultProperties extends Identity {
     protected String name;
+
     protected int weight;
 
     public DefaultProperties(int gid, String name, int weight) {
