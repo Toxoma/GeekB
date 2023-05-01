@@ -75,3 +75,18 @@ def readAllBetweenDates():
         print('Введена дата неверного формата! Повторите попытку.')
         print()
         return readAllBetweenDates()
+
+def chooseAction(msg, length='', start = 0):
+    try:
+        x = int(input(msg))
+        if length != '' and x not in range(start, length):
+                print()
+                print('Вы ввели некорректное число! Повторите попытку.')
+                print()
+                return chooseAction(msg, length, start)
+    except:
+        print()
+        print('Вы пытались ввести не число! Повторите попытку.')
+        print()
+        return chooseAction(msg, length, start)
+    return x
