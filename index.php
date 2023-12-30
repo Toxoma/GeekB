@@ -107,7 +107,18 @@ consoleLog("___________________");
 /*
 5. *С помощью рекурсии организовать функцию возведения числа в степень. Формат: function power($val, $pow), где $val – заданное число, $pow – степень.
 */
-
+function power($val, $pow){
+    $result = 1;
+    if ($pow > 0) {
+        $result *= $val;
+        $pow--;
+        $result *= power($result, $pow);
+    }
+    return $result;
+}
+consoleLog(power(2, 0));
+consoleLog(power(2, 1));
+consoleLog(power(2, 6));
 consoleLog("___________________");
 
 
@@ -117,12 +128,33 @@ consoleLog("___________________");
 21 час 43 минуты.
 */
 
+function getCurrentTimeWithDeclension() {
+    $hour = date('H');
+    $minute = date('i');
 
-$a = 1;
-$b = 2;
+    $hour_text = '';
+    $minute_text = '';
 
-$a+=+$b-$b=$a;
-var_dump($a);
-var_dump($b);
+    // Склонение слова "час" в зависимости от времени
+    if ($hour == 1 || $hour == 21) {
+        $hour_text = 'час';
+    } elseif (($hour >= 2 && $hour <= 4) || ($hour >= 22 && $hour <= 23)) {
+        $hour_text = 'часа';
+    } else {
+        $hour_text = 'часов';
+    }
 
-//phpinfo();
+    // Склонение слова "минута" в зависимости от времени
+    if ($minute % 10 == 1 && $minute != 11) {
+        $minute_text = 'минута';
+    } elseif (($minute % 10 >= 2 && $minute % 10 <= 4) && ($minute < 10 || $minute > 20)) {
+        $minute_text = 'минуты';
+    } else {
+        $minute_text = 'минут';
+    }
+
+    $timeString = "Сейчас $hour $hour_text $minute $minute_text";
+    return $timeString;
+}
+
+consoleLog(getCurrentTimeWithDeclension());
