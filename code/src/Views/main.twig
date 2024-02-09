@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ title }}</title>
+        <link rel="stylesheet" href="/css/header.css">
+        <link rel="stylesheet" href="/css/footer.css">
+        <link rel="stylesheet" href="/css/sidebar.css">
+        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="{{ css_template_name }}">
+    </head>
+    <body>
+        {% include('header.twig') %}
+        <div class="container">
+            {% include('sidebar.twig') %}
+            {% include content_template_name %}
+        </div>
+        {% include('footer.twig') %}
+    </body>
+</html>

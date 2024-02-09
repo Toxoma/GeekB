@@ -1,0 +1,16 @@
+.sidebar{
+  margin-right: 10px;
+  *{
+    color: green;
+  }
+  .list{
+    display: grid;
+    &>*{
+      padding: 5px 20px;
+      background-color: grey;
+    }
+    *+*{
+      margin-top: 5px;
+    }
+  }
+}
