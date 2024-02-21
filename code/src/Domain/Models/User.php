@@ -47,8 +47,8 @@ class User {
         return $this->userLastName;
     }
 
-    public function getUserBirthday(): ?int {
-        return $this->userBirthday;
+    public function getUserBirthday(): ?string {
+        return date('d-m-Y', $this->userBirthday);
     }
 
     public function setBirthdayFromString(string $birthdayString) : void {
@@ -65,7 +65,7 @@ class User {
         $users = [];
 
         foreach($result as $item){
-            $user = new User($item['user_name'], $item['user_lastname'], $item['user_birthday_timestamp']);
+            $user = new User($item['user_name'], $item['user_lastname'], $item['user_birthday_timestamp'], $item['id_user']);
             $users[] = $user;
         }
         
@@ -73,22 +73,38 @@ class User {
     }
 
     public static function validateRequestData(): bool{
-        if(
-            isset($_GET['name']) && !empty($_GET['name']) &&
-            isset($_GET['lastname']) && !empty($_GET['lastname']) &&
-            isset($_GET['birthday']) && !empty($_GET['birthday'])
+        $result = true;
+
+        if(!(
+            isset($_POST['name']) && !empty($_POST['name']) &&
+            isset($_POST['lastname']) && !empty($_POST['lastname']) &&
+            isset($_POST['birthday']) && !empty($_POST['birthday'])
+        )){
+            $result = false;
+        }
+
+        if(!preg_match('/^(\d{2}-\d{2}-\d{4})$/', $_POST['birthday'])){
+            $result =  false;
+        }
+        if (
+            strip_tags($_POST['name']) != $_POST['name'] ||
+            strip_tags($_POST['lastname']) != $_POST['lastname'] ||
+            strip_tags($_POST['birthday']) != $_POST['birthday']
         ){
-            return true;
+            $result =  false;
         }
-        else{
-            return false;
+
+        if(!isset($_SESSION['csrf_token']) || $_SESSION['csrf_token'] != $_POST['csrf_token']){
+            $result = false;
         }
+
+        return $result;
     }
 
     public function setParamsFromRequestData(): void {
-        $this->userName = $_GET['name'];
-        $this->userLastName = $_GET['lastname'];
-        $this->setBirthdayFromString($_GET['birthday']); 
+        $this->userName = htmlspecialchars($_POST['name']);
+        $this->userLastName = htmlspecialchars($_POST['lastname']);
+        $this->setBirthdayFromString($_POST['birthday']);
     }
 
     public function saveToStorage(){
@@ -103,6 +119,18 @@ class User {
     }
 
     public static function exists(int $id): bool{
+        $result = true;
+
+        if(!isset($_SESSION['csrf_token']) || $_SESSION['csrf_token'] != $_POST['csrf_token']){
+            $result = false;
+        }
+
+        if (
+            strip_tags($_POST['id']) != $_POST['id']
+        ){
+            $result =  false;
+        }
+
         $sql = "SELECT count(id_user) as user_count FROM users WHERE id_user = :id_user";
 
         $handler = Application::$storage->get()->prepare($sql);
@@ -110,14 +138,13 @@ class User {
             'id_user' => $id
         ]);
 
-        $result = $handler->fetchAll();
+        $tmp = $handler->fetchAll();
 
-        if(count($result) > 0 && $result[0]['user_count'] > 0){
-            return true;
+        if(!(count($tmp) > 0 && $tmp[0]['user_count'] > 0)){
+            $result = false;
         }
-        else{
-            return false;
-        }
+
+        return $result;
     }
 
     public static function updateUser(User $user, array $userDataArray): void{
@@ -160,5 +187,23 @@ class User {
             return $user;
         }
         return null;
+    }
+
+    public static function checkCookie(string $token): bool {
+        $result = true;
+        $sql = "SELECT * FROM users WHERE cookie_hash = :cookie_hash";
+        $handler = Application::$storage->get()->prepare($sql);
+        $handler->execute(['cookie_hash' => $token]);
+        $tmp = $handler->fetch();
+
+        if ($tmp){
+            $_SESSION['user_name'] = $tmp['user_name'];
+            $_SESSION['user_lastname'] = $tmp['user_lastname'];
+            $_SESSION['id_user'] = $tmp['id_user'];
+        }else{
+            $result = false;
+        }
+
+        return $result;
     }
 }

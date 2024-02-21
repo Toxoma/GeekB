@@ -2,10 +2,40 @@
 
 namespace Geekbrains\Application1\Domain\Controllers;
 
+use Geekbrains\Application1\Application\Application;
+use Geekbrains\Application1\Application\Auth;
 use Geekbrains\Application1\Application\Render;
 use Geekbrains\Application1\Domain\Models\User;
+use Geekbrains\Application1\Domain\Controllers\AbstractController;
 
-class UserController {
+class UserController extends AbstractController {
+    protected array $actionsPermissions = [
+        'actionHash' => ['admin'],
+        'actionSave' => ['admin'],
+        'actionEdit' => ['admin'],
+        'actionIndex' => ['admin'],
+        'actionLogout' => ['admin'],
+    ];
+
+    public function getUserRoles(): array{
+        $roles = parent::getUserRoles();
+
+        if(isset($_SESSION['id_user'])){
+            $rolesSql = "SELECT * FROM user_roles WHERE id_user = :id";
+
+            $handler = Application::$storage->get()->prepare($rolesSql);
+            $handler->execute(['id' => $_SESSION['id_user']]);
+            $result = $handler->fetchAll();
+
+            if(!empty($result)){
+                foreach($result as $role){
+                    $roles[] = $role['role'];
+                }
+            }
+        }
+
+        return $roles;
+    }
 
     public function actionIndex(): string {
         $users = User::getAllUsersFromStorage();
@@ -31,74 +61,154 @@ class UserController {
     }
 
     public function actionSave(): string {
-        if(User::validateRequestData()) {
-            $user = new User();
-            $user->setParamsFromRequestData();
-            $user->saveToStorage();
-
+        if (!$_POST){
             $render = new Render();
-            return $render->renderPage(
-                'user-created.tpl', 
+
+            return $render->renderPageWithForm(
+                'user-form.tpl',
                 [
-                    'title' => 'Пользователь создан',
-                    'message' => "Создан пользователь " . $user->getUserName() . " " . $user->getUserLastName()
+                    'title' => 'Форма создания пользователя',
+                    'action' => 'save',
                 ]);
+        }else{
+            if(User::validateRequestData()) {
+                $user = new User();
+                $user->setParamsFromRequestData();
+                $user->saveToStorage();
+
+                $render = new Render();
+                return $render->renderPage(
+                    'user-created.tpl',
+                    [
+                        'title' => 'Пользователь создан',
+                        'message' => "Создан пользователь " . $user->getUserName() . " " . $user->getUserLastName()
+                    ]);
+            }
+            else {
+                throw new \Exception("Переданные данные некорректны");
+            }
         }
-        else {
-            throw new \Exception("Переданные данные некорректны");
-        }
+
     }
 
     public function actionUpdate(): string {
-        $user = User::getUser($_GET['id']);
-        if($user) {
-            $arrayData = [];
+        $render = new Render();
 
-            if(isset($_GET['name'])){
-                $arrayData['user_name'] = $_GET['name'];
-            }
-
-            if(isset($_GET['lastname'])) {
-                $arrayData['user_lastname'] = $_GET['lastname'];
-            }
-
-            if(isset($_GET['birthday'])) {
-                $arrayData['user_birthday_timestamp'] = strtotime($_GET['birthday']);
-            }
-
-            if (count($arrayData) < 1) {
-                throw new \Exception("Данные не переданы");
-            }
-
-            User::updateUser($user, $arrayData);
+        if (empty($_POST['id']) && empty($_GET['id'])){
+            return $render->renderPageWithForm(
+                'user-get-id.tpl',
+                [
+                    'title' => 'Форма получения пользователя',
+                ]);
         }
-        else {
+        $id = $_POST['id'] ?? $_GET['id'];
+        $user = User::getUser($id);
+        if (!$user){
             throw new \Exception("Пользователь не существует");
         }
 
-        $render = new Render();
-        return $render->renderPage(
-            'user-created.tpl', 
-            [
-                'title' => 'Пользователь обновлен',
-                'message' => "Обновлен пользователь " . $user->getUserId()
-            ]);
-    }
+        if (empty($_POST['name']) || empty($_POST['lastname']) || empty($_POST['birthday'])){
+            return $render->renderPageWithForm(
+                'user-form.tpl',
+                [
+                    'title' => 'Форма обновления пользователя',
+                    'action' => 'update',
+                    'id' => $user->getUserId(),
+                    'name' => $user->getUserName(),
+                    'lastname' => $user->getUserLastName(),
+                    'birthday' => $user->getUserBirthday(),
+                ]);
+        }else{
+            if(!User::validateRequestData()) {
+                throw new \Exception("Переданные данные некорректны");
+            }
 
-    public function actionDelete(): string {
-        $id = $_GET['id'];
-        if(User::exists($id)) {
-            User::deleteFromStorage($id);
+            $arrayData = [];
+            $arrayData['user_name'] = $_POST['name'];
+            $arrayData['user_lastname'] = $_POST['lastname'];
+            $arrayData['user_birthday_timestamp'] = strtotime($_POST['birthday']);
+
+            User::updateUser($user, $arrayData);
 
             $render = new Render();
             return $render->renderPage(
-                'user-removed.tpl', []
-            );
-        }
-        else {
-            throw new \Exception("Пользователь не существует");
+                'user-created.tpl',
+                [
+                    'title' => 'Пользователь обновлен',
+                    'message' => "Обновлен пользователь " . $user->getUserName()
+                ]);
         }
     }
 
-    
+    public function actionDelete(): string {
+        if (!$_POST) {
+            $render = new Render();
+
+            return $render->renderPageWithForm(
+                'user-delete-form.tpl',
+                [
+                    'title' => 'Форма удаления пользователя'
+                ]);
+        } else{
+            $id = $_POST['id'];
+            if(User::exists($id)) {
+                User::deleteFromStorage($id);
+
+                $render = new Render();
+                return $render->renderPage(
+                    'user-removed.tpl', []
+                );
+            }
+            else {
+                throw new \Exception("Пользователь не существует");
+            }
+        }
+    }
+
+    public function actionHash(): string {
+        return Auth::getPasswordHash($_GET['pass_string']);
+    }
+
+    public function actionAuth(): string {
+        $render = new Render();
+
+        return $render->renderPageWithForm(
+            'user-auth.tpl',
+            [
+                'title' => 'Форма логина',
+                'authSuccess' => true,
+            ]);
+    }
+    public function actionLogin(): string {
+        $result = false;
+
+        if(isset($_POST['login']) && isset($_POST['password'])){
+            $result = Application::$auth->proceedAuth($_POST['login'], $_POST['password']);
+        }
+
+        if(!$result){
+            $render = new Render();
+
+            return $render->renderPageWithForm(
+                'user-auth.tpl',
+                [
+                    'title' => 'Форма логина',
+                    'authSuccess' => false,
+                    'authError' => 'Неверные логин или пароль'
+                ]);
+        }
+        else{
+            header('Location: /');
+            return "";
+        }
+    }
+    public function actionLogout(): void {
+        session_destroy();
+        if (isset($_COOKIE['user_hash'])) {
+            setcookie("user_hash", $_COOKIE['user_hash'], time()-3600, "/");
+        }
+        unset($_SESSION['user_name']);
+        header("Location: /");
+        die();
+    }
 }

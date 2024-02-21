@@ -3,6 +3,7 @@
 namespace Geekbrains\Application1\Application;
 
 use Exception;
+use Geekbrains\Application1\Domain\Models\User;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 
@@ -24,6 +25,15 @@ class Render {
         $template = $this->environment->load('main.tpl');
         
         $templateVariables['content_template_name'] = $contentTemplateName;
+
+        if(isset($_SESSION['user_name'])){
+            $templateVariables['user_name'] = $_SESSION['user_name'];
+            $templateVariables['user_authorized'] = true;
+        }else if (isset($_COOKIE['user_hash'])) {
+            if (!User::checkCookie($_COOKIE['user_hash'])){
+                setcookie("user_hash", $_COOKIE['user_hash'], time()-3600, "/");
+            }
+        }
  
         return $template->render($templateVariables);
     }
@@ -35,7 +45,19 @@ class Render {
         ]);
         $template = $environment->load('main.tpl');
         $templateVariables['content_template_name'] = 'error.tpl';
+        if(isset($_SESSION['user_name'])){
+            $templateVariables['user_name'] = $_SESSION['user_name'];
+            $templateVariables['user_authorized'] = true;
+        }
         $templateVariables['error_message'] = $ex->getMessage();
         return $template->render($templateVariables);
+    }
+
+    public function renderPageWithForm(string $contentTemplateName = 'page-index.tpl', array $templateVariables = []) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+        $templateVariables['csrf_token'] = $_SESSION['csrf_token'];
+
+        return $this->renderPage($contentTemplateName, $templateVariables);
     }
 }
