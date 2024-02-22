@@ -34,7 +34,7 @@ class Render {
                 setcookie("user_hash", $_COOKIE['user_hash'], time()-3600, "/");
             }
         }
- 
+
         return $template->render($templateVariables);
     }
 

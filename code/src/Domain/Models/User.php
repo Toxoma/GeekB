@@ -47,8 +47,9 @@ class User {
         return $this->userLastName;
     }
 
-    public function getUserBirthday(): ?string {
-        return date('d-m-Y', $this->userBirthday);
+    public function getUserBirthday(): ?int {
+        return $this->userBirthday;
+        // return date('d-m-Y', $this->userBirthday);
     }
 
     public function setBirthdayFromString(string $birthdayString) : void {

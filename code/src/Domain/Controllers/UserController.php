@@ -2,6 +2,7 @@
 
 namespace Geekbrains\Application1\Domain\Controllers;
 
+use Exception;
 use Geekbrains\Application1\Application\Application;
 use Geekbrains\Application1\Application\Auth;
 use Geekbrains\Application1\Application\Render;
@@ -85,7 +86,7 @@ class UserController extends AbstractController {
                     ]);
             }
             else {
-                throw new \Exception("Переданные данные некорректны");
+                Application::GenerateError("Переданные данные некорректны");
             }
         }
 
@@ -101,10 +102,13 @@ class UserController extends AbstractController {
                     'title' => 'Форма получения пользователя',
                 ]);
         }
-        $id = $_POST['id'] ?? $_GET['id'];
+        $id = (int)($_POST['id'] ?? $_GET['id']);
+        if($id<1){
+            Application::GenerateError("Ошибка при передачи id");
+        }
         $user = User::getUser($id);
         if (!$user){
-            throw new \Exception("Пользователь не существует");
+            Application::GenerateError("Пользователь не существует");
         }
 
         if (empty($_POST['name']) || empty($_POST['lastname']) || empty($_POST['birthday'])){
@@ -116,11 +120,11 @@ class UserController extends AbstractController {
                     'id' => $user->getUserId(),
                     'name' => $user->getUserName(),
                     'lastname' => $user->getUserLastName(),
-                    'birthday' => $user->getUserBirthday(),
+                    'birthday' => date('d-m-Y', $user->getUserBirthday()),
                 ]);
         }else{
             if(!User::validateRequestData()) {
-                throw new \Exception("Переданные данные некорректны");
+                Application::GenerateError("Переданные данные некорректны");
             }
 
             $arrayData = [];
@@ -160,13 +164,16 @@ class UserController extends AbstractController {
                 );
             }
             else {
-                throw new \Exception("Пользователь не существует");
+                Application::GenerateError("Пользователь не существует");
             }
         }
     }
 
     public function actionHash(): string {
-        return Auth::getPasswordHash($_GET['pass_string']);
+        if (isset($_GET['pass_string']) && !empty($_GET['pass_string'])) {
+            return Auth::getPasswordHash($_GET['pass_string']);
+        }
+        Application::GenerateError("Невозможно сгенерировать хэш. Не передан пароль");
     }
 
     public function actionAuth(): string {
