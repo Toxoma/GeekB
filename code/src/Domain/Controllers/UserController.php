@@ -11,11 +11,15 @@ use Geekbrains\Application1\Domain\Controllers\AbstractController;
 
 class UserController extends AbstractController {
     protected array $actionsPermissions = [
-        'actionHash' => ['admin'],
+        'actionHash' => ['user'],
         'actionSave' => ['admin'],
-        'actionEdit' => ['admin'],
-        'actionIndex' => ['admin'],
-        'actionLogout' => ['admin'],
+        'actionUpdate' => ['admin'],
+        'actionDelete' => ['admin'],
+        'actionIndex' => ['user'],
+        'actionAuth' => ['user'],
+        'actionLogin' => ['user'],
+        'actionLogout' => ['user'],
+        'actionIndexRefresh' => ['user'],
     ];
 
     public function getUserRoles(): array{
@@ -52,13 +56,30 @@ class UserController extends AbstractController {
                 ]);
         }
         else{
-            return $render->renderPage(
+            return $render->renderPageWithForm(
                 'user-index.tpl', 
                 [
                     'title' => 'Список пользователей в хранилище',
                     'users' => $users
                 ]);
         }
+    }
+    public function actionIndexRefresh() {
+        $limit = null;
+        if (isset($_POST['maxId']) && $_POST['maxId'] > 0){
+            $limit = $_POST['maxId'];
+        }
+
+        $users = User::getAllUsersFromStorage($limit);
+        $usersData = [];
+
+        if (count($users) > 0){
+            foreach ($users as $user) {
+                $usersData[] = $user->getUserAsArray();
+            }
+        }
+
+        return json_encode($usersData);
     }
 
     public function actionSave(): string {
@@ -158,10 +179,14 @@ class UserController extends AbstractController {
             if(User::exists($id)) {
                 User::deleteFromStorage($id);
 
-                $render = new Render();
-                return $render->renderPage(
-                    'user-removed.tpl', []
-                );
+                if (!empty($_POST['notSeparatePage'])){
+                    return '';
+                }else{
+                    $render = new Render();
+                    return $render->renderPage(
+                        'user-removed.tpl', []
+                    );
+                }
             }
             else {
                 Application::GenerateError("Пользователь не существует");

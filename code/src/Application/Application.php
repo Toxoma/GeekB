@@ -32,7 +32,7 @@ class Application {
 
         Application::$logger = new Logger('application_logger');
         Application::$logger->pushHandler(new StreamHandler(
-            $_SERVER['DOCUMENT_ROOT'] . "/log/".Application::$config->get()['log']['LOGS_FILE']."-".date("Y-m-d").".log", Logger::DEBUG
+            $_SERVER['DOCUMENT_ROOT'].'/../' . "/log/".Application::$config->get()['log']['LOGS_FILE']."-".date("Y-m-d").".log", Logger::DEBUG
         ));
         Application::$logger->pushHandler(new FirePHPHandler());
     }
@@ -96,8 +96,6 @@ class Application {
     private function checkAccessToMethod(AbstractController $controllerInstance, string $methodName): bool {
         $userRoles = $controllerInstance->getUserRoles();
         $rules = $controllerInstance->getActionsPermissions($methodName);
-
-        $rules[] = 'user';
 
         $isAllowed = false;
 

@@ -15,9 +15,9 @@ class Render {
 
 
     public function __construct(){
-        $this->loader = new FilesystemLoader($_SERVER['DOCUMENT_ROOT'] . $this->viewFolder);
+        $this->loader = new FilesystemLoader($_SERVER['DOCUMENT_ROOT'] . '/../' . $this->viewFolder);
         $this->environment = new Environment($this->loader, [
-//            'cache' => $_SERVER['DOCUMENT_ROOT'].'/cache/',
+//            'cache' => $_SERVER['DOCUMENT_ROOT'].'/../'.'/cache/',
         ]);
     }
 
@@ -29,6 +29,7 @@ class Render {
         if(isset($_SESSION['user_name'])){
             $templateVariables['user_name'] = $_SESSION['user_name'];
             $templateVariables['user_authorized'] = true;
+            $templateVariables['is_admin'] = $_SESSION['is_admin'];
         }else if (isset($_COOKIE['user_hash'])) {
             if (!User::checkCookie($_COOKIE['user_hash'])){
                 setcookie("user_hash", $_COOKIE['user_hash'], time()-3600, "/");
@@ -39,9 +40,9 @@ class Render {
     }
 
     public static function renderExceptionPage(Exception $ex): string {
-        $loader = new FilesystemLoader($_SERVER['DOCUMENT_ROOT'] . '/src/Domain/Views/');
+        $loader = new FilesystemLoader($_SERVER['DOCUMENT_ROOT'].'/../' . '/src/Domain/Views/');
         $environment = new Environment($loader, [
-//            'cache' => $_SERVER['DOCUMENT_ROOT'].'/cache/',
+//            'cache' => $_SERVER['DOCUMENT_ROOT'].'/../'.'/cache/',
         ]);
         $template = $environment->load('main.tpl');
         $templateVariables['content_template_name'] = 'error.tpl';
