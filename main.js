@@ -1,157 +1,88 @@
 /*
-Почему код дает именно такие результаты?
+С помощью цикла while вывести все простые числа в промежутке от 0 до 100.
 */
-var a = 1, b = 1, c, d;
-c = ++a; 
-// alert(c); // 2
-d = b++; 
-// alert(d); // 1
-c = (2+ ++a); 
-// alert(c); // 5
-d = (2+ b++); 
-// alert(d); // 4
-// alert(a); // 3
-// alert(b); 
+console.log("С помощью цикла while вывести все простые числа в промежутке от 0 до 100")
+let a = 0
+let flag = true
+while (a <= 100) {
+    if (a < 2) {
+        flag = false
+    }
+    for (let i = 2; i < a; i++) {
+        if (a % i == 0) {
+            flag = false
+            break
+        }
 
-// x=++y - сначало происходит увеличение y потом присвоение
-// x=y++ - сначало происходит присвоение y потом увеличение y
-
-/*
-Чему будет равен x?
-*/
-var a = 2;
-var x = 1 + (a *= 2); //5
-
-/*
-Объявить две целочисленные переменные — a и b и задать им произвольные начальные
-значения. Затем написать скрипт, который работает по следующему принципу:
-o если a и b положительные, вывести их разность;
-o если а и b отрицательные, вывести их произведение;
-© geekbrains.ru 11
-o если а и b разных знаков, вывести их сумму;
-Ноль можно считать положительным числом.
-*/
-a = -2
-b = -5
-if(a>=0 && b>= 0){
-    alert(a-b)
-}else if(a<0 && b<0){
-    alert(a*b)
-}else{
-    alert(a+b)
+    }
+    if (flag) {
+        console.log(a);
+    }
+    flag = true
+    a++
 }
 
 /*
-Присвоить переменной а значение в промежутке [0..15]. С помощью оператора switch
-организовать вывод чисел от a до 15.
-*/
-a = Math.floor(Math.random() * 15)
-console.log(`A = ${a}`);
-switch (a) {
-    case 0:
-        console.log(a++);
-    case 1:
-        console.log(a++);
-    case 2:
-        console.log(a++);
-    case 3:
-        console.log(a++);
-    case 4:
-        console.log(a++);
-    case 5:
-        console.log(a++);
-    case 6:
-        console.log(a++);
-    case 7:
-        console.log(a++);
-    case 8:
-        console.log(a++);
-    case 9:
-        console.log(a++);
-    case 10:
-        console.log(a++);
-    case 11:
-        console.log(a++);
-    case 12:
-        console.log(a++);
-    case 13:
-        console.log(a++);
-    case 14:
-        console.log(a++);
-    case 15:
-        console.log(a++);
-}
+С этого урока начинаем работать с функционалом интернет-магазина. Предположим, есть
+сущность корзины. Нужно реализовать функционал подсчета стоимости корзины в
+зависимости от находящихся в ней товаров.
 
-/*
-Реализовать четыре основные арифметические операции в виде функций с двумя
-параметрами. Обязательно использовать оператор return
+Товары в корзине хранятся в массиве. Задачи:
+a. Организовать такой массив для хранения товаров в корзине;
+b. Организовать функцию countBasketPrice, которая будет считать стоимость корзины.
 */
-function convert(x, y){
-    return [+x,+y]
-}
-function summ(x, y){
-    [x,y]=convert(x,y)
-    return x+y
-}
-function subtract(x, y){
-    [x,y]=convert(x,y)
-    return x-y
-}
-function divide(x, y){
-    try {
-        [x,y]=convert(x,y)
-        if(y === 0) throw new Error('y cannot be 0')
-        return x/y
-    } catch (e) {
-        console.error(e);
+console.log('С этого урока начинаем работать с функционалом интернет-магазина. Предположим, есть сущность корзины. Нужно  еализовать функционал подсчета стоимости корзины в зависимости от находящихся в ней товаров. Товары в корзине хранятся в массиве. Задачи: a. Организовать такой массив для хранения товаров в корзине; b. Организовать функцию countBasketPrice, которая будет считать стоимость корзины.')
+bucketId = 0
+class Bucket {
+    id = 0
+    items = []
+    constructor() {
+        this.id = ++bucketId;
+    }
+    addGood(name, price){
+        this.items.push({
+            name,
+            price
+        })
+    }
+    countBasketPrice(){
+        let result = 0
+        this.items.forEach(element => {
+            result+=element.price
+        });
+        return result
     }
 }
-function multiply(x, y){
-    [x,y]=convert(x,y)
-    return x*y
-}
-console.log(`divide = ${divide(2,'0')}`);
-console.log(`summ = ${summ(2,'2')}`);
+let b1 = new Bucket()
+b1.addGood('apple', 100)
+b1.addGood('apple', 100)
+b1.addGood('apple', 100)
+console.log(b1.countBasketPrice());
+
 
 /*
-Реализовать функцию с тремя параметрами: function mathOperation(arg1, arg2, operation),
-где arg1, arg2 — значения аргументов, operation — строка с названием операции. В
-зависимости от переданного значения выполнить одну из арифметических операций
-(использовать функции из пункта 5) и вернуть полученное значение (применить switch).
+* Вывести с помощью цикла for числа от 0 до 9, не используя тело цикла. Выглядеть это
+должно так:
+for(...){// здесь пусто}
 */
-function mathOperation(arg1, arg2, operation){
-    switch (operation) {
-        case 'summ':
-            return summ(arg1, arg2)
-        case 'subtract':
-            return subtract(arg1, arg2)
-        case 'divide':
-            return divide(arg1, arg2)
-        case 'multiply':
-            return multiply(arg1, arg2)
-    }
+console.log('Вывести с помощью цикла for числа от 0 до 9, не используя тело цикла. Выглядеть это');
+for (let i = 0; console.log(i),i < 10; i++) {
 }
-console.log(mathOperation(2,'0','divide'));
-console.log(mathOperation(2,'0','summ'));
-/*
-* Сравнить null и 0. Объяснить результат.
-*/
-console.log('Сравнить null и 0. Объяснить результат');
-console.log(null == 0);
-console.log(null === 0);
-console.log(null > 0);
-console.log(null >= 0); // Операторы относительного сравнения подразумевают числовой контекст поэтому null преобразуется в 0
 
 /*
-* С помощью рекурсии организовать функцию возведения числа в степень. Формат: function
-power(val, pow), где val — заданное число, pow –— степень.
+ * Нарисовать пирамиду с 20 рядами с помощью console.log, как показано на рисунке:
+x
+xx
+xxx
+xxxx
+xxxxx
 */
-function power(val, pow){
-    [val, pow]=convert(val, pow)
-    if (pow === 0) {
-        return 1
+console.log('Нарисовать пирамиду с 20 рядами с помощью console.log, как показано на рисунке:');
+let str = ''
+for (let i = 1; i <= 20; i++) {
+    for (let j = i; j > 0; j--) {
+        str+='x'
     }
-    return val*power(val, --pow)
+    console.log(str);
+    str=''
 }
-console.log(`power 2^6 = ${power(2,'6')}`);
-console.log(`power 2^0 = ${power(2,'0')}`);
