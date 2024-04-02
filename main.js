@@ -1,62 +1,47 @@
 /*
-Написать функцию, преобразующую число в объект. Передавая на вход число от 0 до 999,
-надо получить на выходе объект, в котором в соответствующих свойствах описаны единицы,
-десятки и сотни. Например, для числа 245 надо получить следующий объект: {‘единицы’: 5,
-‘десятки’: 4, ‘сотни’: 2}. Если число превышает 999, необходимо выдать соответствующее
-сообщение с помощью console.log и вернуть пустой объект.
+Создать функцию, генерирующую шахматную доску. Можно использовать любые html-теги.
+Доска должна быть верно разлинована на черные и белые ячейки. Строки должны
+нумероваться числами от 1 до 8, столбцы — латинскими буквами A, B, C, D, E, F, G, H.
 */
-console.log(`Написать функцию, преобразующую число в объект. Передавая на вход число от 0 до 999,
-надо получить на выходе объект, в котором в соответствующих свойствах описаны единицы,
-десятки и сотни. Например, для числа 245 надо получить следующий объект: {‘единицы’: 5,
-‘десятки’: 4, ‘сотни’: 2}. Если число превышает 999, необходимо выдать соответствующее
-сообщение с помощью console.log и вернуть пустой объект.`);
-function parseIntToObj(number) {
-    if (typeof number !== 'number') {
-        console.log(`Это не число. Передано ${number}`);
-        return null
-    }
-    if (!(number >= 0 && number <= 999)) {
-        console.log(`Число должно быть от 0 до 999. Передано ${number}`);
-        return {}
-    }
-    number+=''
-    let a = 0
-    switch (number.length) {
-        case 3:
-            return {
-                'сотни': number[a++],
-                'десятки': number[a++],
-                'единицы': number[a++],
+
+$(document).ready(()=>{
+    function createBoard(mas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']) {
+        let container = $('.board')
+        let row, col
+        let flag = false
+        for (let i = 0; i < mas.length+1; i++) {
+            row = $("<div class='row'></div>")
+            for (let j = 0; j < mas.length+1; j++) {
+                if (i===0) {
+                    if (j === 0) {
+                        col = $(`<div class='col'></div>`)
+                    }else{
+                        col = $(`<div class='col head'></div>`).text(mas[j-1])
+                    }
+                }else{
+                    if (j===0) {
+                        col = $(`<div class='col'></div>`).text(i)
+                    }else{
+                        col = $(`<div class='col ${(flag ? 'white' : 'black')}'></div>`)
+                    }
+                }
+                flag=!flag
+                row.append(col)
             }
-        case 2:
-            return {
-                'десятки': number[a++],
-                'единицы': number[a++],
-            }
-        default:
-            return {
-                'единицы': number[a++],
-            }
+            container.append(row)
+        }
     }
-}
-console.log(parseIntToObj('245'));
-console.log(parseIntToObj(9999));
-console.log(parseIntToObj(245));
-console.log(parseIntToObj(25));
-console.log(parseIntToObj(5));
+    createBoard()
+})
 
 /*
-Продолжить работу с интернет-магазином:
-a. В прошлом домашнем задании вы реализовали корзину на базе массивов. Какими
-объектами можно заменить их элементы?
-b. Реализуйте такие объекты.
-c. Перенести функционал подсчета корзины на объектно-ориентированную базу.
+Сделать генерацию корзины динамической: верстка корзины не должна находиться в
+HTML-структуре. Там должен быть только div, в который будет вставляться корзина,
+сгенерированная на базе JS:
+a. Пустая корзина должна выводить строку «Корзина пуста»;
+b. Наполненная должна выводить «В корзине: n товаров на сумму m рублей».
+
 */
-console.log(`Продолжить работу с интернет-магазином:
-a. В прошлом домашнем задании вы реализовали корзину на базе массивов. Какими
-объектами можно заменить их элементы?
-b. Реализуйте такие объекты.
-c. Перенести функционал подсчета корзины на объектно-ориентированную базу.`);
 bucketId = 0
 class Bucket {
     id = 0
@@ -94,46 +79,64 @@ class Bucket {
         });
         return result
     }
+    countGoods(){
+        return this.items.length
+    }
 }
 
 let b1 = new Bucket()
-b1.addGood('apple', 100)
-b1.addGood('apple', 100)
-b1.addGood('apple', 100)
-b1.addGood('orange', 200)
 
-console.log(`а) товары в корзине`);
-console.log(`б) сделано`);
-console.log(`в) сделано`);
+$(document).ready(()=>{
+    let basket = $('.basket')
 
-console.log(`Корзина:`);
-console.log(b1.countBasketPrice());
+    b1.addGood('apple', 100)
+    b1.addGood('apple', 100)
+    b1.addGood('apple', 100)
+    b1.addGood('orange', 200)
+    
+    if(b1.countBasketPrice().goods.length > 0){
+        basket.append(`<p>«В корзине: ${b1.countGoods()} товаров на сумму ${b1.countBasketPrice().price} рублей»</p>`)
+    }else{
+        basket.append('<p>«Корзина пуста»</p>')
+    }
+})
 
 /*
-* Подумать над глобальными сущностями. К примеру, сущность «Продукт» в
-интернет-магазине актуальна не только для корзины, но и для каталога. Стремиться нужно к
-тому, чтобы объект «Продукт» имел единую структуру для различных модулей сайта, но в
-разных местах давал возможность вызывать разные методы.
+* Сделать так, чтобы товары в каталоге выводились при помощи JS:
+a. Создать массив товаров (сущность Product);
+b. При загрузке страницы на базе данного массива генерировать вывод из него.
+HTML-код должен содержать только div id=”catalog” без вложенного кода. Весь вид
+каталога генерируется JS.
 
 */
-
 productId = 0
 class Product{
     id = 0
-    constructor(name) {
+    items = []
+    constructor() {
         this.id = ++productId;
-        this.name = name;
+    }
+    addProduct(name){
+        this.items.push({
+            name,
+        })
     }
 }
-goodId = 0
-class Good extends Product{
-    id = 0
-    constructor(name, price) {
-        super(name)
-        this.id = ++goodId;
-        this.price = price;
+let product = new Product()
+product.addProduct('яблоки')
+product.addProduct('груши')
+product.addProduct('смартфоны')
+product.addProduct('туалетная бумага')
+
+$(document).ready(()=>{
+    let catalog = $('#catalog')
+
+    catalog.append('<p><b>Каталог:</b></p>')
+    for (let i = 0; i < product.items.length; i++) {
+        catalog.append(`<p>${i+1}) ${capitalizeFirstLetter(product.items[i].name)}</p>`)
     }
-}
 
-
-
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+})

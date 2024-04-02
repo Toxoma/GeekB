@@ -1,0 +1,1 @@
+body,p{margin:0}.mt-3{margin-top:15px}.board{display:inline-block;border:1px solid #000}.board .row{display:flex}.board .col{display:flex;justify-content:center;align-items:center;width:50px;height:50px}.board .black{background-color:#000}.board .white{background-color:#fff}
