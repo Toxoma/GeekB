@@ -4,23 +4,70 @@ body, p{
 .mt-3{
     margin-top: 15px;
 }
-.board{
-    display: inline-block;
-    border: 1px solid #000;
-    .row{
-        display: flex;
+.d-none{
+    display: none;
+}
+.dz-1{
+    .err-msg{
+        color: red;
     }
-    .col{
+    .board{
+        display: inline-block;
+        border: 1px solid #000;
+        .row{
+            display: flex;
+        }
+        .col{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+        }
+        .black{
+            background-color: #000;
+        }
+        .white{
+            background-color: #fff;
+        }
+    }
+}
+.dz-2{
+    position: relative;
+    margin-top: 30px;
+    .modal{
+        width: 100%;
+        min-height: 500px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        inset: 0;
         display: flex;
-        justify-content: center;
         align-items: center;
-        width: 50px;
-        height: 50px;
-    }
-    .black{
-        background-color: #000;
-    }
-    .white{
-        background-color: #fff;
+        justify-content: center;
+
+        .modal__bgc{
+            position: absolute;
+            top: 0;
+            left: 0;
+            inset: 0;
+            opacity: 0.5;
+            background-color: #000;
+            z-index: -1;
+        }
+        .modal__container{
+            height: 200px;
+            width: 400px;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            .btns{
+                display: flex;
+                justify-content: center;
+                .arrow-right{
+                    margin-left: 10px;
+                }
+            }
+        }
     }
 }
