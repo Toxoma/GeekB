@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Корзина</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="main.js"></script>
@@ -12,7 +14,7 @@
 </head>
 
 <body>
-    <div class="dz-1">
+    <div class="dz-1" x-data="busket">
         <p><b>Магазин</b></p>
         <div>
             <div class="mt-3">
@@ -26,26 +28,45 @@
             <button class="mt-3" id="buyBtn" onclick="buyGood()">Купить</button>
             <p class="err-msg d-none">Заполнены не все поля</p>
         </div>
+
+
+        <p class="mt-8"><b>Корзина</b></p>
         <div class="mt-3">
             <div class="basket"></div>
         </div>
-        <div id="catalog" class="mt-3"></div>
-    </div>
 
 
-    <div class="dz-2">
-        <div class="modal">
-            <div class="modal__bgc"></div>
-            <div class="modal__container">
-                <div class="">
-
-                </div>
-                <div class="btns">
-                    <button class="arrow-left">left</button>
-                    <button class="arrow-right">right</button>
-                </div>
+        <div class="collapse__item" x-on:click.self="toggle(1)">
+            <div id="catalog" class="mt-3" x-show="expanded === 1" x-collapse>
+                <p>«Состав корзины»</p>
+                <template x-for="(item, index) in $store.busket.items" :key="index">
+                    <div class="d-flex">
+                        <div class="item__name" x-text="item.name"></div>
+                        <div class="item__amount">
+                            Кол-во: <pi x-text="item.amount"></pi>
+                            <button x-on:click="addGood(item)">+</button>
+                            <button x-on:click="removeGood(item)">-</button>
+                        </div>
+                        <div>
+                            Цена: <pi x-text="item.price"></pi>
+                        </div>
+                    </div>
+                </template>
+                <button x-on:click.stop="expanded++">Далее</button>
             </div>
         </div>
+        <div class="collapse__item mt-3" x-on:click.self="toggle(2)">
+            <div class="mt-3" x-show="expanded === 2" x-collapse>
+                <p>«Адрес доставки»</p>
+                <button x-on:click.stop="expanded++">Далее</button>
+            </div>
+        </div>
+        <div class="collapse__item mt-3" x-on:click.self="toggle(3)">
+            <div class="mt-3" x-show="expanded === 3" x-collapse>
+                <p>«Комментарий»</p>
+            </div>
+        </div>
+
     </div>
 </body>
 

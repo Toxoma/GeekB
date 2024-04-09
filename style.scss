@@ -4,8 +4,14 @@ body, p{
 .mt-3{
     margin-top: 15px;
 }
+.mt-8{
+    margin-top: 40px;
+}
 .d-none{
     display: none;
+}
+.d-flex{
+    display: flex;
 }
 .dz-1{
     .err-msg{
@@ -31,43 +37,16 @@ body, p{
             background-color: #fff;
         }
     }
-}
-.dz-2{
-    position: relative;
-    margin-top: 30px;
-    .modal{
-        width: 100%;
-        min-height: 500px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        inset: 0;
+    .item__name{
+        width: 100px;
+    }
+    .item__amount{
+        width: 200px;
+    }
+    .collapse__item{
         display: flex;
         align-items: center;
-        justify-content: center;
-
-        .modal__bgc{
-            position: absolute;
-            top: 0;
-            left: 0;
-            inset: 0;
-            opacity: 0.5;
-            background-color: #000;
-            z-index: -1;
-        }
-        .modal__container{
-            height: 200px;
-            width: 400px;
-            background-color: #fff;
-            display: flex;
-            flex-direction: column;
-            .btns{
-                display: flex;
-                justify-content: center;
-                .arrow-right{
-                    margin-left: 10px;
-                }
-            }
-        }
+        min-height: 30px;
+        background-color: #bdb9b9;
     }
 }
