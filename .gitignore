@@ -1,5 +1,5 @@
-**/bin
-**/obj
-*.csproj
-.folder
-__pycache__
+/vendor
+/.idea
+.env
+cache.txt
+database.sqlite
