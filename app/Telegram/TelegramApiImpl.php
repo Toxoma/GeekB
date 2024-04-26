@@ -49,7 +49,7 @@ class TelegramApiImpl implements TelegramApi {
 
         $data = [
             'chat_id' => 610941258,
-            'text' => 'asd',
+            'text' => $text,
         ];
 
         $ch = curl_init($url);

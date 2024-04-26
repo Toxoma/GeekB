@@ -66,6 +66,7 @@ class HandleEventsCommand extends Command
 //        error_log($currentMonth);
         return ((int)$event['day'] === (int)$currentDay &&
             (int)$event['month'] === (int)$currentMonth);
+
         return ((int)$event['minute'] === (int)$currentMinute &&
 
             (int)$event['hour'] === (int)$currentHour &&
