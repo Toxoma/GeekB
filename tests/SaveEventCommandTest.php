@@ -2,6 +2,9 @@
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers SaveEventCommand
+ */
 class SaveEventCommandTest extends TestCase
 {
     /**
@@ -16,7 +19,7 @@ class SaveEventCommandTest extends TestCase
         self::assertEquals($result, $isNeedHelp);
     }
 
-    public function isNeedHelpDataProvider(): array
+    public function isNeedHelpDataProvider()
     {
         return [
             [

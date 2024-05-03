@@ -20,10 +20,8 @@ class TelegramApiImpl implements TelegramApi {
         while (true) {
             $ch = curl_init("{$url}&offset={$offset}");
 
-//            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json')); // Set the content type to application/json
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json')); // Set the content type to application/json
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response instead of printing it
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_HEADER, false);
 
             $response = json_decode(curl_exec($ch), true);
 
@@ -48,18 +46,21 @@ class TelegramApiImpl implements TelegramApi {
         $url = self::ENDPOINT . $this->token . '/sendMessage';
 
         $data = [
-            'chat_id' => 610941258,
+            'chat_id' => $chatId,
             'text' => $text,
         ];
 
         $ch = curl_init($url);
 
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HEADER, false);
+        $jsonData = json_encode($data);
+
+        curl_setopt($ch, CURLOPT_POST, true); // Specify the request method as POST
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData); // Attach the encoded JSON data
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json')); // Set the content type to application/json
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response instead of printing it
+
         curl_exec($ch);
+
         curl_close($ch);
     }
 }
