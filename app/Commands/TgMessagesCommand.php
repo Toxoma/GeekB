@@ -47,7 +47,8 @@ class TgMessagesCommand extends Command
 
         $this->redis->set('tg_messages:offset', $result['offset'] ?? 0);
 
-        $this->oldMessages = (array) json_decode($this->redis->get('tg_messages:old_messages'));
+        $this->oldMessages = json_decode($this->redis->get('tg_messages:old_messages'));
+
         $messages = [];
 
         foreach ($result['result'] ?? [] as $chatId => $newMessage) {
