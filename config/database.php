@@ -57,6 +57,12 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
+//            'read' => [
+//                'host' => '192.168.1.1',
+//            ],
+//            'write' => [
+//                'host' => '196.168.1.2'
+//            ],
         ],
 
         'mariadb' => [
