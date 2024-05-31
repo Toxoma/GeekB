@@ -12,6 +12,8 @@
 <div class="container">
     <p>Привет, {{$surname}} {{$name}}!</p>
     <p>Твоя почта: {{$email}}</p>
+    <p>Твоя street: {{$street}}</p>
+    <p>{{var_dump($workData)}}</p>
 </div>
 </body>
 </html>

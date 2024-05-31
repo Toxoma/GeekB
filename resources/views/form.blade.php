@@ -10,15 +10,27 @@
 </head>
 <body>
 <div class="container">
-    <form action="{{url('store_form')}}" method="post" id="form" class="contact-form">
+    <form name="employee-form" id="employee-form" method="post" action="{{url('store-form')}}">
         @csrf
-        <div>
-            <p>name</p>
-            <input type="text" name="name">
-            <p>surname</p>
-            <input type="text" name="surname">
-            <p>email</p>
-            <input type="text" name="email">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="surname">Surname</label>
+            <input type="text" id="surname" name="surname" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="job">Job</label>
+            <input type="text" id="job" name="job" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="workData">WorkData</label>
+{{--            <textarea id="workData" name="workData" class="form-control"></textarea>--}}
         </div>
         <button type="submit" class="btn btn-primary mt-2">Submit</button>
     </form>
