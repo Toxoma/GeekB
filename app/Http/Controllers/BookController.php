@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public  function index()
+    public  function index($id)
     {
-        return view('book', ['title' => 'smth', 'author'=>'me', 'genre'=>'drama']);
+        $book = Book::find($id);
+        if (!$book){
+            return 'Book not found!';
+        }
+        return view('book', ['title' => $book->title, 'author'=>$book->author, 'genre'=>$book->genre]);
     }
     public function store(Request $request)
     {
