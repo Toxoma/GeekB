@@ -10,30 +10,38 @@
 </head>
 <body>
 <div class="container">
-    <form name="employee-form" id="employee-form" method="post" action="{{url('store-form')}}">
-        @csrf
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="surname">Surname</label>
-            <input type="text" id="surname" name="surname" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="job">Job</label>
-            <input type="text" id="job" name="job" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="workData">WorkData</label>
-{{--            <textarea id="workData" name="workData" class="form-control"></textarea>--}}
-        </div>
-        <button type="submit" class="btn btn-primary mt-2">Submit</button>
-    </form>
+    <div class="add-books__form-wrapper">
+        <form action="{{url('store-form')}}" method="post" name="add-new-book" id="add-new-book">
+            @csrf
+            <div class="form-section">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" class="form-control" required>
+            </div>
+            <div class="form-section">
+                <label for="author">Author</label>
+                <input type="text" id="author" name="author" class="form-control" required>
+            </div>
+            <div class="form-section">
+                <label for="gener">Choose Gener:</label>
+                <select name="genre" id="genre">
+                    <option value="fantasy">fantasy</option>
+                    <option value="sci-fi">sci-fi</option>
+                    <option value="mystery">mystery</option>
+                    <option value="drama">drama</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Submit</button>
+        </form>
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{$error}}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+    </div>
 </div>
 </body>
 </html>

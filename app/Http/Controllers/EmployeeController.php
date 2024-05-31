@@ -32,10 +32,10 @@ class EmployeeController extends Controller
         $street = $workData->address->street;
         return view('hello', ['name' => $name, 'surname' => $surname, 'email' => $email, 'workData' => $workData, 'street'=>$street] );
     }
-    public  function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $path = $request->path();
         $url = $request->url();
-//        return view('hello', [$id]);
+        return view('hello', ['id'=>$id]);
     }
 }
