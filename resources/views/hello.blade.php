@@ -10,7 +10,9 @@
 </head>
 <body>
 <div class="container">
-    <p>Твоя почта: {{$id}}</p>
+    <p>name: {{$name}}</p>
+    <p>surname: {{$surname}}</p>
+    <p>email: {{$email}}</p>
 </div>
 </body>
 </html>
