@@ -10,7 +10,9 @@
 </head>
 <body>
 <div class="container">
-    <p>Твоя почта: {{$id}}</p>
+    <p>Твоя title: {{$title}}</p>
+    <p>author: {{$author}}</p>
+    <p>genre: {{$genre}}</p>
 </div>
 </body>
 </html>
