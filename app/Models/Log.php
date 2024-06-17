@@ -12,10 +12,4 @@ class Log extends Model
     /**
      * @var mixed|string
      */
-    public mixed $time;
-    public mixed $duration;
-    public mixed $ip;
-    public mixed $url;
-    public mixed $method;
-    public mixed $input;
 }
