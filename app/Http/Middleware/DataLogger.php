@@ -28,7 +28,7 @@ class DataLogger
                 $endTime = microtime(true);
                 $log = new Log();
                 $log->time = gmdate('Y-m-d H:i:s');
-                $log->duration = number_format($endTime = LARAVEL_START, 3);
+                $log->duration = number_format(100, 3);
                 $log->ip = $request->ip();
                 $log->url = $request->fullUrl();
                 $log->method = $request->method();
