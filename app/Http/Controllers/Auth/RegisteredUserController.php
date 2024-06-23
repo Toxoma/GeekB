@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\TestEmail;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Telegram\Bot\Api;
 
 class RegisteredUserController extends Controller
 {
@@ -44,6 +47,17 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+//        Mail::to('recipient@domain.com')
+//            ->cc('cc@domain.com')
+//            ->bcc('bcc@domain.com')
+//            ->send(new TestEmail());
+
+        $telegram = new Api(env('TELEGRAM_BOT_TOKEN', 'YOUR-BOT-TOKEN'));
+        $telegram->sendMessage([
+            'chat_id' => env('TELEGRAM_CHAT_ID', ''),
+            'text' => 'Hello '.$user->name.'!!!'
+        ]);
 
         return redirect(route('dashboard', absolute: false));
     }
