@@ -13,6 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(DataLogger::class);
+        $middleware->validateCsrfTokens(except: [
+            'products',
+            'products/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

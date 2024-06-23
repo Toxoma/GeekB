@@ -32,4 +32,6 @@ Route::get('test-telegram', function () {
     ]);
 });
 
+Route::apiResource('products', \App\Http\Controllers\ProductController::class);
+
 require __DIR__.'/auth.php';
